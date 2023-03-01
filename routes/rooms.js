@@ -1,18 +1,22 @@
 const { Router } = require("express");
+const { createRoom, updateRoom, deleteRoom, getRoom, getAllRoom } = require("../controllers/room");
+const { verifyAdmin } = require("../utils/veifyToken");
 
 const roomsRouter = Router();
-roomsRouter.get("/", async (req, res) => {
+//CREATE
+roomsRouter.post("/:hotelid",verifyAdmin ,createRoom);
 
-    try {
+//UPDATE
+roomsRouter.put("/:id",verifyAdmin, updateRoom);
 
-    }
-    catch (err) {
-        res.status(500).err
-    }
+//DELETE
+roomsRouter.delete("/:id/:hotelid",verifyAdmin, deleteRoom);
 
-});
-roomsRouter.get("/", (req, res) => {
-    res.send("Rooms Router")
-});
+//GET
+roomsRouter.get("/:id", getRoom);
+
+//GET ALL
+roomsRouter.get("/", getAllRoom);
+
 
 module.exports = { roomsRouter }
