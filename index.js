@@ -1,4 +1,6 @@
 const express = require('express');
+const cors = require('cors');
+
 const { connection } = require('./config/db');
 const { AuthRouter } = require('./routes/auth');
 const { hotelsRouter } = require('./routes/hotels');
@@ -10,6 +12,7 @@ const app = express();
 
 //middlewares
 app.use(express.json());
+app.use(cors());
 app.use(cookieParser());
 app.use("/auth", AuthRouter);
 app.use("/hotels", hotelsRouter);

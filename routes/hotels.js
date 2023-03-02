@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { createHotel, updateHotel, deleteHotel, getHotel, getAllHotel } = require("../controllers/hotel");
+const { createHotel, updateHotel, deleteHotel, getHotel, getAllHotel, countByCity, countByType } = require("../controllers/hotel");
 const { verifyAdmin } = require("../utils/veifyToken");
 
 const hotelsRouter = Router();
@@ -14,9 +14,11 @@ hotelsRouter.put("/:id",verifyAdmin, updateHotel);
 hotelsRouter.delete("/:id",verifyAdmin, deleteHotel);
 
 //GET
-hotelsRouter.get("/:id", getHotel);
+hotelsRouter.get("/find/:id", getHotel);
 
 //GET ALL
 hotelsRouter.get("/", getAllHotel);
+hotelsRouter.get("/countByCity", countByCity);
+hotelsRouter.get("/countByType", countByType);
 
 module.exports = { hotelsRouter }

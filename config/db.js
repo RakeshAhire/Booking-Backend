@@ -5,11 +5,11 @@ require('dotenv').config();
 const connection = mongoose.connect(process.env.MONGO);
 
 mongoose.connection.on("disconnected", () => {
-    console.log("mongoDB disconnected!")
+    console.log("mongoDB disconnected!");
 })
 
 mongoose.connection.on("connected", () => {
-    console.log("mongoDB connected!")
+    console.log("mongoDB connected!");
 })
 
 module.exports = { connection }
