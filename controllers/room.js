@@ -18,12 +18,31 @@ const createRoom = async (req, res, next) => {
     }
 }
 
+// update
 const updateRoom = async (req, res, next) => {
     const { id } = req.params;
     const payload = req.body;
     try {
         const updateRoom = await RoomModel.findByIdAndUpdate(id, { $set: payload }, { new: true });
         res.status(200).json(updateRoom)
+    }
+    catch (err) {
+        next(err)
+    }
+}
+
+//selected rooms
+const updateRoomAvailability = async (req, res, next) => {
+    const { id } = req.params;
+    const {dates} = req.body;
+    try {
+        await RoomModel.updateOne({"roomNumbers._id":id},
+        {
+            $push:{
+                "roomNumbers.$.unavailableDates":dates
+            }
+        })
+        res.status(200).json("Room Status has been updated!")
     }
     catch (err) {
         next(err)
@@ -75,4 +94,6 @@ const getAllRoom = async (req, res, next) => {
     }
 }
 
-module.exports = { createRoom, updateRoom, getAllRoom, getRoom, deleteRoom }
+module.exports = { createRoom, updateRoom, getAllRoom, getRoom, deleteRoom,
+    updateRoomAvailability
+}

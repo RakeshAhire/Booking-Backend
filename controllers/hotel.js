@@ -1,4 +1,5 @@
 const { HotelModel } = require("../models/hotels.model");
+const { RoomModel } = require("../models/rooms.model");
 
 //CREATE
 const createHotel = async (req, res, next) => {
@@ -40,6 +41,7 @@ const deleteHotel = async (req, res, next) => {
 //GET
 const getHotel = async (req, res, next) => {
     const { id } = req.params;
+    // console.log('id: ', id);
     try {
         const hotel = await HotelModel.findById(id);
         res.status(200).json(hotel)
@@ -52,10 +54,11 @@ const getHotel = async (req, res, next) => {
 //GET ALL
 const getAllHotel = async (req, res, next) => {
     const { min, max, ...others } = req.query
+    // console.log('req.query: ', req.query);
     try {
         const hotels = await HotelModel.find({
             ...others, cheapestPrice: {
-                $gt: min || 1, $lt: max || 999999
+                $gte: min || 1, $lte: max || 999999
             }
         }).limit(req.query.limit);
         res.status(200).json(hotels)
@@ -101,7 +104,24 @@ const countByType = async (req, res, next) => {
         next(err)
     }
 }
+
+
+const gethotelRooms = async (req, res, next) => {
+    const {id} = req.params;
+    try {
+        const hotel = await HotelModel.findById(id);
+        const list=await Promise.all(hotel.rooms.map(room=>{
+            return RoomModel.findById(room)
+        }))
+        res.status(200).json(list)
+    }
+    catch (err) {
+        next(err)
+    }
+}
+
+
 module.exports = {
     createHotel, updateHotel, deleteHotel, getHotel, getAllHotel,
-    countByCity, countByType
+    countByCity, countByType,gethotelRooms
 }

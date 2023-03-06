@@ -45,7 +45,7 @@ const login = async (req, res, next) => {
                             httpOnly: true,
                         })
                         .status(200)
-                        .send({ "user": { ...otherDetails }, "message": "Login Successfully!" })
+                        .send({ "user": { ...otherDetails,isAdmin }, "message": "Login Successfully!" })
                 }
                 else {
                     next(createError(400, "Wrong password or username!"))
